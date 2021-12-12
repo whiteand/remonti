@@ -1,0 +1,22 @@
+.footer {
+  margin: 0 auto;
+  color: #666;
+  display: block;
+  text-align: center;
+  opacity: 0.33;
+  transition: opacity 0.5s;
+  &:hover {
+      opacity: 1;
+  }
+
+  a {
+    color: #333;
+    text-decoration: none;
+
+    font-weight: bolder;
+    &:hover {
+      color: #222;
+      cursor: pointer;
+    }
+  }
+}
