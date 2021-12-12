@@ -1,4 +1,4 @@
-# Hello React!
+# Ремонты это просто!
 
 This project contains a foundation for building and learning about React apps. The site includes two routes showing how navigation works in a single page app. We manage the page head and body using a standard React flow. The homepage features a click effect that demonstrates using state, and an animation you can try out yourself by following the steps in `TODO.md`. 💫
 

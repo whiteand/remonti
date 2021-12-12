@@ -11,7 +11,6 @@ const Seo = () => {
   // We use the async package https://github.com/staylor/react-helmet-async
   return <Helmet>
     <title>{SEO.title}</title>
-
     <meta
       name="description"
       content={SEO.description}
