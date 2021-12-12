@@ -1,6 +1,6 @@
 import ScrollTrigger from "gsap/ScrollTrigger";
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { auditTime, fromEvent, map } from "rxjs";
+import { auditTime, fromEvent, map, Subject } from "rxjs";
 import workAndPrice from "./work-and-price.json";
 import s from "./WorksAndPrices.module.scss";
 
@@ -27,10 +27,41 @@ export default function WorksAndPrices(): JSX.Element {
 
   useEffect(() => {
     const elements: Element[] = [];
-    elements.push(...document.querySelectorAll(`.${s.horizontalLine}`));
+    const lines = document.querySelectorAll(`.${s.horizontalLine}`);
     elements.push(...document.querySelectorAll(`.${s.row}`));
     elements.push(...document.querySelectorAll(`.${s.typeHeader}`));
     const triggers: ScrollTrigger[] = [];
+    const toShowQueue: Element[] = [];
+
+    let timeout: number | null = null;
+    let nextTimeout = 100;
+    function showOneLine() {
+      timeout = null;
+      nextTimeout = Math.max(0, nextTimeout - 5);
+      if (toShowQueue.length <= 0) return;
+      const first = toShowQueue.shift();
+      first.classList.add(s.visible);
+      timeout = setTimeout(showOneLine, nextTimeout);
+    }
+    const show$ = new Subject<Element>();
+    const sub = show$.subscribe((element) => {
+      toShowQueue.push(element);
+      if (!timeout) {
+        showOneLine();
+      }
+    });
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      triggers.push(
+        ScrollTrigger.create({
+          trigger: line,
+          start: "top 99%",
+          onToggle: () => show$.next(line),
+          once: true,
+          fastScrollEnd: true,
+        })
+      );
+    }
     for (let i = 0; i < elements.length; i++) {
       triggers.push(
         ScrollTrigger.create({
@@ -44,6 +75,8 @@ export default function WorksAndPrices(): JSX.Element {
     }
     return () => {
       triggers.forEach((trigger) => trigger.kill());
+      sub.unsubscribe();
+      if (timeout) clearTimeout(timeout);
     };
   }, [search]);
 
