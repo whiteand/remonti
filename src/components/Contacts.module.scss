@@ -11,13 +11,18 @@
     text-decoration: none;
     color: #369;
     img {
-        margin-right: 10px;
+      margin-right: 10px;
     }
   }
 }
 
 .linksWrapper {
-    display: flex;
+  display: flex;
+  align-items: start;
+  gap: 15px;
+  flex-direction: column;
+  @media (min-width: 640px) {
     align-items: center;
-    gap: 15px;
+    flex-direction: row;
+  }
 }
