@@ -20,6 +20,22 @@
   }
 }
 
+.search {
+  padding: 5px 10px;
+  background: #eaeaea;
+  display: block;
+  border: 1px solid #eaeaea;
+  outline: none;
+  width: 100%;
+  font-size: 16px;
+  &:hover {
+    border-color: #999;
+  }
+  &:active {
+    border-color: #666;
+  }
+}
+
 .typeHeader {
   text-align: center;
   text-transform: uppercase;

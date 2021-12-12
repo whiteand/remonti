@@ -3,4 +3,11 @@
   display: block;
   width: 180px;
   margin-bottom: 50px;
+  transition: opacity 0.5s ease-out, transform 1s ease-out;
+  transform: scale(0.85);
+  opacity: 0;
+  &.visible {
+    transform: scale(1);
+    opacity: 1;
+  }
 }

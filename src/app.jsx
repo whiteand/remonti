@@ -34,7 +34,6 @@ export default function Home() {
           <PageRouter />
         </div>
       </main>
-      {/* Footer links to Home and About, Link elements matched in router.jsx */}
       <Footer />
     </Router>
   );

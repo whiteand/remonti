@@ -1,4 +1,11 @@
-import React, { useEffect } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { auditTime, fromEvent, map } from "rxjs";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import workAndPrice from "./work-and-price.json";
 import s from "./WorksAndPrices.module.scss";
@@ -22,12 +29,14 @@ function Price({ price }: { price: string }): JSX.Element {
 }
 
 export default function WorksAndPrices(): JSX.Element {
+  const [search, setSearch] = useState("");
+
   useEffect(() => {
     const elements: Element[] = [];
     elements.push(...document.querySelectorAll(`.${s.horizontalLine}`));
     elements.push(...document.querySelectorAll(`.${s.row}`));
     elements.push(...document.querySelectorAll(`.${s.typeHeader}`));
-    const triggers: { kill(): void }[] = [];
+    const triggers: ScrollTrigger[] = [];
     for (let i = 0; i < elements.length; i++) {
       triggers.push(
         ScrollTrigger.create({
@@ -42,17 +51,47 @@ export default function WorksAndPrices(): JSX.Element {
     return () => {
       triggers.forEach((trigger) => trigger.kill());
     };
-  }, []);
+  }, [search]);
+
+  const records = useMemo(() => {
+    if (!search.trim()) return workAndPrice;
+    return workAndPrice.filter((record) =>
+      record.description.trim().toLowerCase().includes(search.toLowerCase())
+    );
+  }, [search, workAndPrice]);
+
+  const searchRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (!searchRef.current) return;
+    const sub = fromEvent<InputEvent>(searchRef.current, "input")
+      .pipe(
+        map((event) => (event.target as HTMLInputElement).value),
+        auditTime(500)
+      )
+      .subscribe((search) => {
+        setSearch(search);
+      });
+    return () => {
+      sub.unsubscribe();
+    };
+  }, [searchRef.current]);
 
   return (
     <div className={s.wrapper}>
-      {workAndPrice.map((record, ind, records) => (
+      <h2>Наши Услуги</h2>
+      <input
+        type="text"
+        className={s.search}
+        placeholder="Напр: демонтаж ванны..."
+        ref={searchRef}
+      />
+      {records.map((record, ind) => (
         <React.Fragment key={record.description}>
           {ind > 0 && records[ind - 1].type === record.type && (
             <div className={s.horizontalLine} />
           )}
           {(ind === 0 || records[ind - 1].type !== record.type) && (
-            <h2 className={s.typeHeader}>{record.type}</h2>
+            <h3 className={s.typeHeader}>{record.type}</h3>
           )}
           <div className={s.row}>
             <div className={s.description}>{record.description}</div>
