@@ -1,0 +1,23 @@
+.wrapper {
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  font-size: 16px;
+
+  a {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: #369;
+    img {
+        margin-right: 10px;
+    }
+  }
+}
+
+.linksWrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}

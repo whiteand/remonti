@@ -18,6 +18,9 @@
     opacity: 1;
     transform: translateY(0);
   }
+  &::nth-child(even) {
+    background-color: #eaeaea;
+  }
 }
 
 .search {
