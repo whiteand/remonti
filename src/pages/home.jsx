@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import logo from "../assets/logo.jpg";
-import WorksAndPrices from "../components/WorksAndPrices";
 import Contacts from "../components/Contacts";
+import WorksAndPrices from "../components/WorksAndPrices";
 import s from "./home.module.scss";
 
 export default function Home() {
@@ -14,7 +14,7 @@ export default function Home() {
       logoRef.current.classList.remove(s.visible);
     };
   }, [logoRef.current]);
-  
+
   return (
     <>
       <img ref={logoRef} src={logo} className={s.logo} />

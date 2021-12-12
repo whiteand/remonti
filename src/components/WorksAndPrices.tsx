@@ -1,12 +1,6 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import { auditTime, fromEvent, map } from "rxjs";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { auditTime, fromEvent, map } from "rxjs";
 import workAndPrice from "./work-and-price.json";
 import s from "./WorksAndPrices.module.scss";
 
